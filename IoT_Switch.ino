@@ -34,7 +34,7 @@ void loop() {
   if (msg[0] == 'C' && msg[4] == 'E' && msg[msglen - 3] == 'K') {//比较回传信息（基于ESP8266回传信息特性），是否已经成功建立连接，若否，错误指示灯亮
     digitalWrite(ErrorLED, 0);
     Serial.print("AT+CIPSEND=1\r\n");//发送数据
-    delay(50);
+    delay(100);
     msglen = recvmsg();
     if (msg[2] == 'O' && msg[3] == 'K') {//同上比较
       digitalWrite(ErrorLED, 0);

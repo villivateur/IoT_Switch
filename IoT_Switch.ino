@@ -28,7 +28,7 @@ void loop() {
   delay(100);
   recvmsg();//清空缓冲区
 
-  Serial.print("AT+CIPSTART=\"TCP\",\"192.168.27.2\",10081\r\n");//建立TCP连接
+  Serial.print("AT+CIPSTART=\"TCP\",\"vvs1.vv98.xyz\",10081\r\n");//建立TCP连接
   delay(200);
   msglen = recvmsg();
   if (msg[0] == 'C' && msg[4] == 'E' && msg[msglen - 3] == 'K') {//比较回传信息（基于ESP8266回传信息特性），是否已经成功建立连接，若否，错误指示灯亮

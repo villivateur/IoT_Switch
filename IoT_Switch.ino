@@ -33,22 +33,24 @@ void loop() {
   msglen = recvmsg();
   if (msg[0] == 'C' && msg[4] == 'E' && msg[msglen - 3] == 'K') {//比较回传信息（基于ESP8266回传信息特性），是否已经成功建立连接，若否，错误指示灯亮
     digitalWrite(ErrorLED, 0);
-    Serial.print("AT+CIPSEND=1\r\n");//发送数据
-    delay(100);
-    msglen = recvmsg();
-    if (msg[2] == 'O' && msg[3] == 'K') {//同上比较
-      digitalWrite(ErrorLED, 0);
-      Serial.print("6");//发送一个“6”（测试用）
-      delay(200);
+    while (1) {
+      Serial.print("AT+CIPSEND=1\r\n");//发送数据
+      delay(100);
       msglen = recvmsg();
-      if (msg[2] == 'R' && msg[7] == '1' && msg[18] == 'S' && msg[23] == 'O' && msg[34] == '1' && msg[msglen - 3] == 'D') {//同上比较
+      if (msg[2] == 'O' && msg[3] == 'K') {//同上比较
         digitalWrite(ErrorLED, 0);
-        if (msg[36] == '1') digitalWrite(MyLED, 1);
-        if (msg[36] == '0') digitalWrite(MyLED, 0);//根据回传数据控制
+        Serial.print("6");//发送一个“6”（测试用）
+        delay(200);
+        msglen = recvmsg();
+        if (msg[2] == 'R' && msg[7] == '1' && msg[18] == 'S' && msg[23] == 'O' && msg[34] == '1' && msg[msglen - 2] == ':') {//同上比较
+          digitalWrite(ErrorLED, 0);
+          if (msg[mslen] == '1') digitalWrite(MyLED, 1);
+          if (msg[mslen] == '0') digitalWrite(MyLED, 0);//根据回传数据控制
+        }
+        else digitalWrite(ErrorLED, 1);
       }
       else digitalWrite(ErrorLED, 1);
     }
-    else digitalWrite(ErrorLED, 1);
   }
   else digitalWrite(ErrorLED, 1);
 }

@@ -10,6 +10,6 @@ while True:
     client_connection, client_address = listen_socket.accept()
     req = client_connection.recv(1024)
     print req
-    resp = "0"
+    resp = "1"
     client_connection.sendall(str(resp))
     client_connection.close()

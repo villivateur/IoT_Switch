@@ -54,13 +54,16 @@ int main()
 	{
 		memset(buffer,0,sizeof(buffer));
 		int len = recv(conn, buffer, sizeof(buffer),0);	  
-		printf("recive message from client:\n");
-		fputs(buffer,stdout);
-		printf("\n");
-		buffer[0]='1';
-		printf("Send messsge to client:\n");
-		fputs(buffer,stdout);
-		printf("\n"); 
+		//printf("recive message from client:\n");
+		//fputs(buffer,stdout);
+		//printf("\n");
+		FILE *ctrl=fopen("ctrl.in","r");
+		buffer[0]=fgetc(ctrl);
+		fclose(ctrl);
+		//buffer[0]='1';
+		//printf("Send messsge to client:\n");
+		//fputs(buffer,stdout);
+		//printf("\n"); 
 		send(conn, buffer, len, 0);
 	}
 	close(conn);

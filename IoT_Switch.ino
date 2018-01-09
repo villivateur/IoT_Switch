@@ -28,22 +28,22 @@ void loop() {
   int msglen = 0;//用于存放回传信息长度
 
   Serial.print("AT+CIPCLOSE\r\n");//为防止前一个TCP连接仍存在而导致错误，先清空链连接
-  delay(50);
+  delay(100);
   recvmsg();//清空缓冲区
 
-  Serial.print("AT+CIPSTART=\"TCP\",\"192.168.27.2\",10838\r\n");//建立TCP连接
-  delay(200);
+  Serial.print("AT+CIPSTART=\"TCP\",\"192.168.27.2\",10081\r\n");//建立TCP连接
+  delay(300);
   msglen = recvmsg();
   if (msg[0] == 'C' && msg[4] == 'E' && msg[msglen - 3] == 'K') {//比较回传信息（基于ESP8266回传信息特性），是否已经成功建立连接，若否，错误指示灯亮
     digitalWrite(ErrorLED, 0);
     while (1) {
       Serial.print("AT+CIPSEND=1\r\n");//发送数据
-      delay(50);
+      delay(100);
       msglen = recvmsg();
       if (msg[2] == 'O' && msg[3] == 'K') {//同上比较
         digitalWrite(ErrorLED, 0);
         Serial.print("6");//发送一个“6”（测试用）
-        delay(200);
+        delay(300);
         msglen = recvmsg();
 
         if (msg[2] == 'R' && msg[7] == '1' && msg[18] == 'S' && msg[23] == 'O' && msg[34] == '1') {//同上比较

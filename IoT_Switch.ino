@@ -3,14 +3,17 @@
    @Villivateur Von
    基于ESP8266和Arduino的Socket内网穿透控制客户端
 */
+#include <Servo.h>
+
 #define ErrorLED 12 //错误指示灯
-#define MyLED 5 //被控制的数字接口
+Servo myservo;//控制舵机
 
 void setup() {
   Serial.begin(115200);
 
+  myservo.attach(9);
+
   pinMode(ErrorLED, OUTPUT);
-  pinMode(MyLED, OUTPUT);
 
   digitalWrite(ErrorLED, 0);//错误指示灯置0
   delay(6000);//ESP8266启动预留时间
@@ -45,8 +48,8 @@ void loop() {
 
         if (msg[2] == 'R' && msg[7] == '1' && msg[18] == 'S' && msg[23] == 'O' && msg[34] == '1' && msg[msglen - 2] == ':') {//同上比较
           digitalWrite(ErrorLED, 0);
-          if (msg[msglen-1] == '1') digitalWrite(MyLED, 1);
-          if (msg[msglen-1] == '0') digitalWrite(MyLED, 0);//根据回传数据控制
+          if (msg[msglen-1] == '1') myservo.write(0);
+          if (msg[msglen-1] == '0') myservo.write(140);//根据回传数据控制
         }
         else {
           digitalWrite(ErrorLED, 1);
